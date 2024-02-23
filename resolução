@@ -1,0 +1,202 @@
+#1 Crie uma tabela chamada "alunos" com os seguintes campos: id (inteiro), nome (texto), idade (inteiro) e curso (texto)
+
+CREATE TABLE alunos (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    idade INTEGER,
+    curso VARCHAR(100)
+);
+
+#2 Insira pelo menos 5 registros de alunos na tabela que você criou no exercício anterior.
+
+INSERT INTO alunos (nome, idade, curso) VALUES ('João Silva', 20, 'Engenharia Civil');
+INSERT INTO alunos (nome, idade, curso) VALUES ('Maria Santos', 22, 'Medicina');
+INSERT INTO alunos (nome, idade, curso) VALUES ('Pedro Oliveira', 19, 'Direito');
+INSERT INTO alunos (nome, idade, curso) VALUES ('Ana Souza', 21, 'Administração');
+INSERT INTO alunos (nome, idade, curso) VALUES ('Lucas Ferreira', 23, 'Ciência da Computação');
+
+
+    SELECT * FROM alunos;
+
+| id  | nome           | idade | curso                 |
+| --- | -------------- | ----- | --------------------- |
+| 1   | João Silva     | 20    | Engenharia Civil      |
+| 2   | Maria Santos   | 22    | Medicina              |
+| 3   | Pedro Oliveira | 19    | Direito               |
+| 4   | Ana Souza      | 21    | Administração         |
+| 5   | Lucas Ferreira | 23    | Ciência da Computação |
+
+---
+#3 Consultas Básicas
+        a) Selecionar todos os registros da tabela "alunos".
+SELECT * FROM alunos;
+        b) Selecionar o nome e a idade dos alunos com mais de 20 anos.
+
+    SELECT nome, idade
+    FROM alunos
+    WHERE idade > 20;
+
+| nome           | idade |
+| -------------- | ----- |
+| Maria Santos   | 22    |
+| Ana Souza      | 21    |
+| Lucas Ferreira | 23    |
+
+---
+    c) Selecionar os alunos do curso de "Engenharia" em ordem alfabética.
+
+    SELECT * FROM alunos 
+    WHERE curso LIKE 'Engenharia%' 
+    ORDER BY nome;
+
+| id  | nome       | idade | curso            |
+| --- | ---------- | ----- | ---------------- |
+| 1   | João Silva | 20    | Engenharia Civil |
+
+---
+
+        d) Contar o número total de alunos na tabela
+
+
+    SELECT COUNT(*) AS total_alunos FROM alunos;
+
+| total_alunos |
+| ------------ |
+| 5            |
+
+---
+
+#4 Atualização e Remoção
+        a) Atualize a idade de um aluno específico na tabela.
+UPDATE alunos
+SET idade = 21
+WHERE nome = 'João Silva';
+
+        b) Remova um aluno pelo seu ID.
+DELETE FROM alunos
+WHERE id = 3;
+
+#5 Crie uma tabela chamada "clientes" com os campos: id (chave primária), nome (texto), idade (inteiro) e saldo (float). Insira alguns registros de clientes na tabela.
+
+CREATE TABLE clientes (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    idade INTEGER,
+    saldo FLOAT
+);
+-- Inserção de registros de clientes
+
+INSERT INTO clientes (nome, idade, saldo) VALUES ('Maria Silva', 35, 500.75);
+INSERT INTO clientes (nome, idade, saldo) VALUES ('João Santos', 28, 1200.50);
+INSERT INTO clientes (nome, idade, saldo) VALUES ('Ana Oliveira', 42, 750.20);
+INSERT INTO clientes (nome, idade, saldo) VALUES ('Pedro Lima', 30, 900.80);
+INSERT INTO clientes (nome, idade, saldo) VALUES ('Carla Sousa', 25, 600.40);
+
+    CREATE TABLE clientes (
+        id SERIAL PRIMARY KEY,
+        nome VARCHAR(100),
+        idade INTEGER,
+        saldo FLOAT
+    );
+    -- Inserção de registros de clientes
+    INSERT INTO clientes (nome, idade, saldo) VALUES ('Maria Silva', 35, 500.75);
+    INSERT INTO clientes (nome, idade, saldo) VALUES ('João Santos', 28, 1200.50);
+    INSERT INTO clientes (nome, idade, saldo) VALUES ('Ana Oliveira', 42, 750.20);
+    INSERT INTO clientes (nome, idade, saldo) VALUES ('Pedro Lima', 30, 900.80);
+    INSERT INTO clientes (nome, idade, saldo) VALUES ('Carla Sousa', 25, 600.40);
+
+---
+
+    SELECT * FROM clientes;
+
+| id  | nome         | idade | saldo  |
+| --- | ------------ | ----- | ------ |
+| 1   | Maria Silva  | 35    | 500.75 |
+| 2   | João Santos  | 28    | 1200.5 |
+| 3   | Ana Oliveira | 42    | 750.2  |
+| 4   | Pedro Lima   | 30    | 900.8  |
+| 5   | Carla Sousa  | 25    | 600.4  |
+
+---
+   a) Selecione o nome e a idade dos clientes com idade superior a 30 anos.
+
+    SELECT nome, idade
+    FROM clientes
+    WHERE idade > 30;
+
+| nome         | idade |
+| ------------ | ----- |
+| Maria Silva  | 35    |
+| Ana Oliveira | 42    |
+
+---
+
+     b) Calcule o saldo médio dos clientes.
+
+    SELECT AVG(saldo) AS saldo_medio
+    FROM clientes;
+
+| saldo_medio       |
+| ----------------- |
+| 790.5300048828125 |
+
+---
+    
+     c) Encontre o cliente com o saldo máximo.
+
+     SELECT nome, saldo
+    FROM clientes
+    WHERE saldo = (SELECT MAX(saldo) FROM clientes);
+
+| nome        | saldo  |
+| ----------- | ------ |
+| João Santos | 1200.5 |
+
+---
+
+     d) Conte quantos clientes têm saldo acima de 1000.
+
+    SELECT COUNT(*) AS total_clientes_saldo_acima_de_1000
+    FROM clientes
+    WHERE saldo > 1000;
+
+| total_clientes_saldo_acima_de_1000 |
+| ---------------------------------- |
+| 1                                  |
+
+---
+
+#7 Atualização e Remoção com Condições
+
+   a) Atualize o saldo de um cliente específico.
+
+        UPDATE clientes
+        SET saldo = 1500.25
+        WHERE nome = 'Maria Silva';
+
+  b) Remova um cliente pelo seu ID.
+
+      DELETE FROM clientes
+      WHERE id = 3;
+
+#8 Junção de Tabelas- Crie uma segunda tabela chamada "compras" com os campos: id (chave primária), cliente_id (chave estrangeira referenciando o id da tabela "clientes"), produto (texto) e valor (real).
+
+    CREATE TABLE compras (
+    id SERIAL PRIMARY KEY,
+    cliente_id INTEGER,
+    produto VARCHAR(100),
+    valor REAL,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+);
+
+-- Inserção de algumas compras associadas a clientes existentes na tabela "clientes"
+INSERT INTO compras (cliente_id, produto, valor) VALUES (1, 'Produto A', 50.00);
+INSERT INTO compras (cliente_id, produto, valor) VALUES (2, 'Produto B', 75.00);
+INSERT INTO compras (cliente_id, produto, valor) VALUES (3, 'Produto C', 100.00);
+INSERT INTO compras (cliente_id, produto, valor) VALUES (4, 'Produto D', 120.00);
+INSERT INTO compras (cliente_id, produto, valor) VALUES (5, 'Produto E', 90.00);
+
+-- Consulta para exibir o nome do cliente, o produto e o valor de cada compra
+SELECT c.nome AS nome_cliente, co.produto, co.valor
+FROM clientes c
+JOIN compras co ON c.id = co.cliente_id;
